@@ -7,6 +7,7 @@ export interface RecordDto {
   entity_type: string
   stage_id: number | null
   owner_id: number | null
+  status: string | null
   data: Record<string, unknown>
   created_at: string
   updated_at: string
@@ -15,6 +16,23 @@ export interface RecordDto {
 export interface AbilitiesDto {
   op: string[]
   ui: string[]
+}
+
+export interface AuthUserDto {
+  id: number
+  email: string
+  name?: string
+}
+
+export interface LoginResponseDto {
+  token: string
+  tenant_id: number
+  user: AuthUserDto
+}
+
+export interface MeDto {
+  user: { id: number, name: string, email: string }
+  tenant_id: number
 }
 
 export interface TenantDto {

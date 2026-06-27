@@ -6,10 +6,3 @@ export const formStyle = {
   gap: baseTokens.space.md,
   maxWidth: '640px',
 }
-
-export const labelStyle = {
-  display: 'block',
-  marginBottom: baseTokens.space.xs,
-  color: baseTokens.color.muted,
-  fontSize: '13px',
-}

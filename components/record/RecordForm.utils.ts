@@ -1,24 +1,34 @@
-// CONTROLLER for the RecordForm use-case: fetch schema + layout (API), assign to stores,
-// and submit. No logic in the View; no API in the stores.
+// CONTROLLER for the RecordForm use-case: fetch schema + form layout (+ the record when editing),
+// cache schema/layout, and submit. No logic in the View; no API in the stores.
 import { schemaApi, layoutApi, recordsApi } from '~/lib/api/client'
 import { useSchemaStore } from '~/stores/useSchemaStore'
 import { useLayoutStore } from '~/stores/useLayoutStore'
-import { buildFormFields, type FormFieldVm } from './RecordForm.model'
+import type { EntitySchemaDto, LayoutDto } from '~/types/schema'
+import type { RecordDto } from '~/types/dto'
 
-/** Load the entity schema + form layout, cache them, and return the ordered field view-models. */
-export async function loadForm(entityKey: string): Promise<FormFieldVm[]> {
-  const [schema, layout] = await Promise.all([
+export interface FormSurface {
+  schema: EntitySchemaDto
+  layout: LayoutDto
+  record: RecordDto | null
+}
+
+/** Load the entity schema + form layout (and the record when editing); cache schema + layout. */
+export async function loadFormSurface(entityKey: string, recordId?: number): Promise<FormSurface> {
+  const [schema, layout, record] = await Promise.all([
     schemaApi.get(entityKey),
     layoutApi.get('form', `${entityKey}.form`),
+    recordId != null ? recordsApi.get(recordId) : Promise.resolve(null),
   ])
 
   useSchemaStore().setSchema(schema)
   useLayoutStore().setLayout(layout)
 
-  return buildFormFields(schema, layout.schema)
+  return { schema, layout, record }
 }
 
-/** Persist the form values as a new record. */
-export async function submitForm(entityKey: string, values: Record<string, unknown>) {
-  return recordsApi.create(entityKey, { data: values })
+/** Persist the form values: create a new record, or update an existing one. */
+export async function submitForm(entityKey: string, values: Record<string, unknown>, recordId?: number) {
+  return recordId == null
+    ? recordsApi.create(entityKey, { data: values })
+    : recordsApi.update(recordId, { data: values })
 }

@@ -10,6 +10,7 @@ describe('toRecordCardModel', () => {
       entity_type: 'deal',
       stage_id: 3,
       owner_id: 11,
+      status: 'open',
       data: { title: 'Knee surgery — A. Patient' },
       created_at: '2026-06-01T10:00:00Z',
       updated_at: '2026-06-02T12:30:00Z',
@@ -25,7 +26,7 @@ describe('toRecordCardModel', () => {
 
   it('falls back to an id-based title when no title/name field is present', () => {
     const dto: RecordDto = {
-      id: 9, entity_type: 'deal', stage_id: null, owner_id: null,
+      id: 9, entity_type: 'deal', stage_id: null, owner_id: null, status: null,
       data: {}, created_at: 'x', updated_at: 'y',
     }
     expect(toRecordCardModel(dto).title).toBe('#9')
