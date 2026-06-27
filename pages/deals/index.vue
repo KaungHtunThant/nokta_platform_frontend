@@ -12,7 +12,11 @@ function open(id: number): void {
 <template>
   <main style="padding: 2rem; font-family: Inter, system-ui, sans-serif">
     <h1>Deals</h1>
-    <p><NuxtLink to="/deals/new">+ New deal</NuxtLink></p>
+    <p>
+      <NuxtLink to="/deals/new">+ New deal</NuxtLink>
+      ·
+      <NuxtLink to="/deals/board">Board →</NuxtLink>
+    </p>
     <RecordList entity-key="deal" @select="open" />
   </main>
 </template>

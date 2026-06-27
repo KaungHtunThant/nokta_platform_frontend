@@ -18,13 +18,17 @@ import MultiSelectInput from '~/components/render/fields/MultiSelectInput.vue'
 import ValueDisplay from '~/components/render/fields/ValueDisplay.vue'
 
 export default defineNuxtPlugin(() => {
-  // Node types. row/col/group reuse the section container for tolerance; board/card/nav arrive later.
+  // Node types. row/col/group/card/board-column reuse the section container; card-slot reuses the
+  // field node (display in detail mode). nav-item/widget arrive in later phases.
   registerNodeType('tabs', TabsNode)
   registerNodeType('section', SectionNode)
   registerNodeType('row', SectionNode)
   registerNodeType('col', SectionNode)
   registerNodeType('group', SectionNode)
+  registerNodeType('card', SectionNode)
+  registerNodeType('board-column', SectionNode)
   registerNodeType('field', FieldNode)
+  registerNodeType('card-slot', FieldNode)
 
   // Field types — one ValueDisplay covers all; inputs vary by widget.
   registerFieldType('text', { input: TextInput, display: ValueDisplay })

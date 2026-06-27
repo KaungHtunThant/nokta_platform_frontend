@@ -1,7 +1,7 @@
 // API client layer — HTTP + endpoint mapping only. Returns typed DTOs.
 // NO business logic here, and NO mapping to Models (utils do that).
 // Views and stores must NOT import this module (enforced by eslint.config.mjs).
-import type { RecordDto, AbilitiesDto, LoginResponseDto, MeDto } from '~/types/dto'
+import type { RecordDto, AbilitiesDto, LoginResponseDto, MeDto, BoardDto } from '~/types/dto'
 import type { EntitySchemaDto, LayoutDto } from '~/types/schema'
 import { useAuthStore } from '~/stores/useAuthStore'
 
@@ -30,6 +30,17 @@ export const recordsApi = {
     request<RecordDto>(`/entity-types/${encodeURIComponent(entityType)}/records`, { method: 'POST', body: payload }),
   update: (id: number, payload: { status?: string, data: Record<string, unknown> }) =>
     request<RecordDto>(`/records/${id}`, { method: 'PUT', body: payload }),
+  move: (id: number, payload: { stage_id: number, comment?: string, position?: number }) =>
+    request<RecordDto>(`/records/${id}/move`, { method: 'POST', body: payload }),
+}
+
+export const boardApi = {
+  get: (entityType: string, params: { pipeline_id?: number, per_page?: number } = {}) => {
+    const qs = new URLSearchParams(
+      Object.entries(params).filter(([, v]) => v != null).map(([k, v]) => [k, String(v)]),
+    ).toString()
+    return request<BoardDto>(`/entity-types/${encodeURIComponent(entityType)}/board${qs ? `?${qs}` : ''}`)
+  },
 }
 
 export const schemaApi = {

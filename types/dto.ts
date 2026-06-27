@@ -18,6 +18,35 @@ export interface AbilitiesDto {
   ui: string[]
 }
 
+export interface PipelineDto {
+  id: number
+  key: string
+  label: string
+  position: number
+}
+
+export interface StageDto {
+  id: number
+  key: string
+  label: string
+  color: string | null
+  position: number
+  is_initial: boolean
+  is_won: boolean
+  is_lost: boolean
+}
+
+export interface BoardColumnDto {
+  stage: StageDto
+  records: RecordDto[]
+  meta: { total: number, per_page: number, current_page: number, last_page: number }
+}
+
+export interface BoardDto {
+  pipeline: PipelineDto
+  columns: BoardColumnDto[]
+}
+
 export interface AuthUserDto {
   id: number
   email: string

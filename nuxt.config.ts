@@ -19,6 +19,7 @@ export default defineNuxtConfig({
       apiBase: 'http://localhost:8000/api',
       wsHost: '127.0.0.1',
       wsPort: '8080',
+      reverbKey: '', // set NUXT_PUBLIC_REVERB_KEY to enable realtime board updates
       expressWhatsappUrl: '',
     },
   },
