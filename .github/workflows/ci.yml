@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Enable Corepack (yarn)
+        run: corepack enable
+
+      - name: Install (immutable — lockfile committed)
+        run: yarn install --immutable
+
+      - name: Dependency hygiene (no duplicate versions)
+        run: yarn dedupe --check
+
+      - name: Lint (layer-boundary rules)
+        run: yarn lint
+
+      - name: Type check (strict)
+        run: yarn typecheck
+
+      - name: Unit tests (Vitest)
+        run: yarn test

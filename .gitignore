@@ -1,0 +1,12 @@
+node_modules
+.nuxt
+.output
+.data
+dist
+.env
+*.log
+.DS_Store
+.idea
+.vscode
+
+# Commit the lockfile (dependency hygiene): yarn.lock is NOT ignored.
