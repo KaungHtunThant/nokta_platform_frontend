@@ -10,6 +10,7 @@ export const useSchemaStore = defineStore('schema', {
   state: (): State => ({ byKey: {} }),
   getters: {
     get: (s) => (entityKey: string): EntitySchemaDto | undefined => s.byKey[entityKey],
+    keys: (s): string[] => Object.keys(s.byKey),
   },
   actions: {
     setSchema(schema: EntitySchemaDto): void {

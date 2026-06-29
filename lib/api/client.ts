@@ -1,8 +1,8 @@
 // API client layer — HTTP + endpoint mapping only. Returns typed DTOs.
 // NO business logic here, and NO mapping to Models (utils do that).
 // Views and stores must NOT import this module (enforced by eslint.config.mjs).
-import type { RecordDto, AbilitiesDto, LoginResponseDto, MeDto, BoardDto } from '~/types/dto'
-import type { EntitySchemaDto, LayoutDto } from '~/types/schema'
+import type { RecordDto, AbilitiesDto, LoginResponseDto, MeDto, BoardDto, LayoutVersionDto } from '~/types/dto'
+import type { EntitySchemaDto, LayoutDto, LayoutNode } from '~/types/schema'
 import { useAuthStore } from '~/stores/useAuthStore'
 
 function base(): string {
@@ -56,6 +56,18 @@ export const schemaApi = {
 export const layoutApi = {
   get: (surface: string, key: string) =>
     request<LayoutDto>(`/layouts/${encodeURIComponent(surface)}/${encodeURIComponent(key)}`),
+
+  // --- Phase 5 builder ---
+  versions: (surface: string, key: string) =>
+    request<{ data: LayoutVersionDto[] }>(`/layouts/${encodeURIComponent(surface)}/${encodeURIComponent(key)}/versions`),
+  saveVersion: (surface: string, key: string, payload: { schema: LayoutNode, note?: string }) =>
+    request<LayoutVersionDto>(`/layouts/${encodeURIComponent(surface)}/${encodeURIComponent(key)}/versions`, { method: 'POST', body: payload }),
+  publish: (surface: string, key: string, version: number) =>
+    request<LayoutDto>(`/layouts/${encodeURIComponent(surface)}/${encodeURIComponent(key)}/publish`, { method: 'POST', body: { version } }),
+  rollback: (surface: string, key: string, version: number) =>
+    request<LayoutDto>(`/layouts/${encodeURIComponent(surface)}/${encodeURIComponent(key)}/rollback`, { method: 'POST', body: { version } }),
+  reset: (surface: string, key: string) =>
+    request<LayoutDto>(`/layouts/${encodeURIComponent(surface)}/${encodeURIComponent(key)}/reset`, { method: 'POST' }),
 }
 
 export const authApi = {
