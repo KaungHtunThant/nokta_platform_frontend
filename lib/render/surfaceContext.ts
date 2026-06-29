@@ -24,3 +24,8 @@ export function useSurfaceContext(): SurfaceContext {
   }
   return ctx
 }
+
+/** Optional variant — surfaces without record values (e.g. nav) render without a provider. */
+export function useSurfaceContextOptional(): SurfaceContext | undefined {
+  return inject(KEY, undefined)
+}

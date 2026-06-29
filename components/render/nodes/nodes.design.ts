@@ -29,3 +29,13 @@ export const fieldLabelStyle = {
   fontSize: '13px',
   color: baseTokens.color.muted,
 }
+
+export const navItemStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: baseTokens.space.xs,
+  padding: `${baseTokens.space.xs} ${baseTokens.space.sm}`,
+  borderRadius: baseTokens.radius.md,
+  color: baseTokens.color.primary,
+  textDecoration: 'none',
+}
