@@ -84,3 +84,11 @@ export interface TenantDto {
   slug: string
   name: Record<string, string>
 }
+
+export interface LayoutVersionDto {
+  version: number
+  schema_version: number
+  note: string | null
+  created_by: number | null
+  created_at: string | null
+}
