@@ -16,6 +16,10 @@ export interface FieldDto {
   default_value: unknown
   position: number
   options?: FieldOptionDto[]
+  // Phase 4 — capability flags that drive the filter/sort/report UI.
+  is_filterable?: boolean
+  is_sortable?: boolean
+  is_reportable?: boolean
 }
 
 export interface EntitySchemaDto {
