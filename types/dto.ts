@@ -13,9 +13,24 @@ export interface RecordDto {
   updated_at: string
 }
 
+export interface StageAccessDto {
+  can_move_from: boolean
+  can_move_to: boolean
+  can_view: boolean
+}
+
+export interface FieldAccessDto {
+  can_read: boolean
+  can_update: boolean
+  ui_visible: boolean
+}
+
 export interface AbilitiesDto {
   op: string[]
   ui: string[]
+  // Capability matrices — only EXPLICITLY configured entries; a missing stage/field means "open".
+  stages: Record<string, StageAccessDto> // keyed by stage id (string in JSON)
+  fields: Record<string, FieldAccessDto> // keyed by field key
 }
 
 export interface PipelineDto {

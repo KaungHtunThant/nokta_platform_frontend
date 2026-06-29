@@ -2,10 +2,15 @@
 // (OCP: new types register here without editing the renderer). Runs before any surface renders.
 import { registerNodeType } from '~/lib/registries/componentRegistry'
 import { registerFieldType } from '~/lib/registries/fieldTypeRegistry'
+import { registerViewType } from '~/lib/registries/viewRegistry'
 
 import TabsNode from '~/components/render/nodes/TabsNode.vue'
 import SectionNode from '~/components/render/nodes/SectionNode.vue'
 import FieldNode from '~/components/render/nodes/FieldNode.vue'
+import NavItemNode from '~/components/render/nodes/NavItemNode.vue'
+
+import KanbanBoard from '~/components/board/KanbanBoard.vue'
+import RecordList from '~/components/record/RecordList.vue'
 
 import TextInput from '~/components/render/fields/TextInput.vue'
 import TextareaInput from '~/components/render/fields/TextareaInput.vue'
@@ -29,6 +34,11 @@ export default defineNuxtPlugin(() => {
   registerNodeType('board-column', SectionNode)
   registerNodeType('field', FieldNode)
   registerNodeType('card-slot', FieldNode)
+  registerNodeType('nav-item', NavItemNode)
+
+  // View types — the catch-all route resolves a nav entry's viewType to one of these (OCP).
+  registerViewType('kanban-board', KanbanBoard)
+  registerViewType('list', RecordList)
 
   // Field types — one ValueDisplay covers all; inputs vary by widget.
   registerFieldType('text', { input: TextInput, display: ValueDisplay })

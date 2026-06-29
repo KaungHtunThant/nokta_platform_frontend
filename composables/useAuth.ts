@@ -2,6 +2,9 @@
 // Views call this composable; they never touch the API client or localStorage directly.
 import { authApi } from '~/lib/api/client'
 import { useAuthStore } from '~/stores/useAuthStore'
+import { useAbilityStore } from '~/stores/useAbilityStore'
+import { loadAbilities } from '~/lib/abilities/abilities'
+import { loadNav } from '~/lib/nav/loadNav'
 import { persistToken, clearToken } from '~/lib/auth/session'
 
 export function useAuth() {
@@ -11,6 +14,8 @@ export function useAuth() {
     const res = await authApi.login({ email: input.email, password: input.password, tenant_id: input.tenantId })
     store.setSession({ token: res.token, tenantId: res.tenant_id, user: res.user })
     persistToken(res.token)
+    await loadAbilities() // resolve abilities for the tenant before the app mounts dynamic nav
+    await loadNav() // cache the resolved nav layout for dynamic routing + the menu
   }
 
   async function logout(): Promise<void> {
@@ -21,6 +26,7 @@ export function useAuth() {
       // best-effort server-side revoke; clear locally regardless
     }
     store.clear()
+    useAbilityStore().clear()
     clearToken()
   }
 
