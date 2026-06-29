@@ -22,9 +22,14 @@ async function request<T>(path: string, init: FetchOptions = {}): Promise<T> {
   })
 }
 
+function queryString(params: Record<string, string> = {}): string {
+  const qs = new URLSearchParams(params).toString()
+  return qs ? `?${qs}` : ''
+}
+
 export const recordsApi = {
-  list: (entityType: string) =>
-    request<{ data: RecordDto[] }>(`/entity-types/${encodeURIComponent(entityType)}/records`),
+  list: (entityType: string, params: Record<string, string> = {}) =>
+    request<{ data: RecordDto[] }>(`/entity-types/${encodeURIComponent(entityType)}/records${queryString(params)}`),
   get: (id: number) => request<RecordDto>(`/records/${id}`),
   create: (entityType: string, payload: { status?: string, data: Record<string, unknown> }) =>
     request<RecordDto>(`/entity-types/${encodeURIComponent(entityType)}/records`, { method: 'POST', body: payload }),
@@ -35,7 +40,7 @@ export const recordsApi = {
 }
 
 export const boardApi = {
-  get: (entityType: string, params: { pipeline_id?: number, per_page?: number } = {}) => {
+  get: (entityType: string, params: { pipeline_id?: number, per_page?: number, filters?: string } = {}) => {
     const qs = new URLSearchParams(
       Object.entries(params).filter(([, v]) => v != null).map(([k, v]) => [k, String(v)]),
     ).toString()
