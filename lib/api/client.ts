@@ -1,7 +1,7 @@
 // API client layer — HTTP + endpoint mapping only. Returns typed DTOs.
 // NO business logic here, and NO mapping to Models (utils do that).
 // Views and stores must NOT import this module (enforced by eslint.config.mjs).
-import type { RecordDto, AbilitiesDto, LoginResponseDto, MeDto, BoardDto, LayoutVersionDto } from '~/types/dto'
+import type { RecordDto, RecordRefDto, AbilitiesDto, LoginResponseDto, MeDto, BoardDto, LayoutVersionDto } from '~/types/dto'
 import type { EntitySchemaDto, LayoutDto, LayoutNode } from '~/types/schema'
 import { useAuthStore } from '~/stores/useAuthStore'
 
@@ -37,6 +37,18 @@ export const recordsApi = {
     request<RecordDto>(`/records/${id}`, { method: 'PUT', body: payload }),
   move: (id: number, payload: { stage_id: number, comment?: string, position?: number }) =>
     request<RecordDto>(`/records/${id}/move`, { method: 'POST', body: payload }),
+
+  // --- Phase 6: relations ---
+  // Relation-field picker: a light {id,label,entity_type} list of a target entity type.
+  picker: (entityType: string, q = '') =>
+    request<RecordRefDto[]>(`/entity-types/${encodeURIComponent(entityType)}/records-picker${queryString(q ? { q } : {})}`),
+  // Records linked to a record (both directions), optionally narrowed to one relation key.
+  related: (recordId: number, relationKey?: string) =>
+    request<RecordRefDto[]>(`/records/${recordId}/links${queryString(relationKey ? { relation_key: relationKey } : {})}`),
+  link: (recordId: number, payload: { to_record_id: number, relation_key: string }) =>
+    request<unknown>(`/records/${recordId}/links`, { method: 'POST', body: payload }),
+  unlink: (recordId: number, payload: { to_record_id: number, relation_key: string }) =>
+    request<unknown>(`/records/${recordId}/links`, { method: 'DELETE', body: payload }),
 }
 
 export const boardApi = {

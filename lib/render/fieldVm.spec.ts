@@ -14,7 +14,12 @@ describe('toFieldVm', () => {
 
   it('defaults required=false, help=null, placeholder="" when absent', () => {
     const vm = toFieldVm(field())
-    expect(vm).toMatchObject({ required: false, help: null, placeholder: '' })
+    expect(vm).toMatchObject({ required: false, help: null, placeholder: '', targetEntityType: null })
+  })
+
+  it('reads a relation field\'s target entity type from ui', () => {
+    const vm = toFieldVm(field({ type: 'relation', ui: { target_entity_type: 'contact' } }))
+    expect(vm.targetEntityType).toBe('contact')
   })
 })
 

@@ -8,6 +8,7 @@ import TabsNode from '~/components/render/nodes/TabsNode.vue'
 import SectionNode from '~/components/render/nodes/SectionNode.vue'
 import FieldNode from '~/components/render/nodes/FieldNode.vue'
 import NavItemNode from '~/components/render/nodes/NavItemNode.vue'
+import RelatedRecordsNode from '~/components/render/nodes/RelatedRecordsNode.vue'
 
 import KanbanBoard from '~/components/board/KanbanBoard.vue'
 import RecordList from '~/components/record/RecordList.vue'
@@ -21,6 +22,8 @@ import SelectInput from '~/components/render/fields/SelectInput.vue'
 import RadioInput from '~/components/render/fields/RadioInput.vue'
 import MultiSelectInput from '~/components/render/fields/MultiSelectInput.vue'
 import ValueDisplay from '~/components/render/fields/ValueDisplay.vue'
+import RelationInput from '~/components/render/fields/RelationInput.vue'
+import RelationDisplay from '~/components/render/fields/RelationDisplay.vue'
 
 export default defineNuxtPlugin(() => {
   // Node types. row/col/group/card/board-column reuse the section container; card-slot reuses the
@@ -35,6 +38,7 @@ export default defineNuxtPlugin(() => {
   registerNodeType('field', FieldNode)
   registerNodeType('card-slot', FieldNode)
   registerNodeType('nav-item', NavItemNode)
+  registerNodeType('related-records', RelatedRecordsNode)
 
   // View types — the catch-all route resolves a nav entry's viewType to one of these (OCP).
   registerViewType('kanban-board', KanbanBoard)
@@ -55,4 +59,6 @@ export default defineNuxtPlugin(() => {
   registerFieldType('select', { input: SelectInput, display: ValueDisplay })
   registerFieldType('radio', { input: RadioInput, display: ValueDisplay })
   registerFieldType('multiselect', { input: MultiSelectInput, display: ValueDisplay })
+  // Phase 6 — relation: async record picker (input) + labelled link (display).
+  registerFieldType('relation', { input: RelationInput, display: RelationDisplay })
 })

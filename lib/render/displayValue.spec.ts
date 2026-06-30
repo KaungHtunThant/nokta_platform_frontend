@@ -3,7 +3,7 @@ import { formatFieldValue } from './displayValue'
 import type { FieldVm } from './fieldVm'
 
 function vm(over: Partial<FieldVm> = {}): FieldVm {
-  return { key: 'f', type: 'text', label: 'F', required: false, help: null, placeholder: '', options: [], ...over }
+  return { key: 'f', type: 'text', label: 'F', required: false, help: null, placeholder: '', options: [], targetEntityType: null, ...over }
 }
 
 describe('formatFieldValue', () => {
@@ -31,5 +31,9 @@ describe('formatFieldValue', () => {
   it('formats numeric money/number values', () => {
     expect(formatFieldValue(vm({ type: 'money' }), 1500)).toBe((1500).toLocaleString())
     expect(formatFieldValue(vm({ type: 'number' }), '42')).toBe((42).toLocaleString())
+  })
+
+  it('renders a relation value as a record reference (no-component fallback)', () => {
+    expect(formatFieldValue(vm({ type: 'relation' }), 7)).toBe('#7')
   })
 })

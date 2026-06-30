@@ -27,6 +27,17 @@ export function resolveNavEntry(nav: LayoutNode | null | undefined, slug: string
   return navEntries(nav).find(entry => entry.slug === slug)
 }
 
+/**
+ * The nav slug under which an entity type's records live (used to build links to a related record's
+ * detail page). Prefers a `list` entry over a `kanban-board` one so links land on the record list.
+ */
+export function slugForEntity(nav: LayoutNode | null | undefined, entityType: string): string | null {
+  const entries = navEntries(nav).filter(e => e.entityType === entityType)
+  const preferred = entries.find(e => e.viewType === 'list') ?? entries[0]
+
+  return preferred ? preferred.slug : null
+}
+
 function flatten(node: LayoutNode): LayoutNode[] {
   return [node, ...(node.children ?? []).flatMap(flatten)]
 }

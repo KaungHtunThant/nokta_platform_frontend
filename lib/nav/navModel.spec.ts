@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { navEntries, resolveNavEntry } from './navModel'
+import { navEntries, resolveNavEntry, slugForEntity } from './navModel'
 import type { LayoutNode } from '~/types/schema'
 
 const nav: LayoutNode = {
@@ -36,5 +36,21 @@ describe('navModel', () => {
 
   it('returns nothing for an empty layout', () => {
     expect(navEntries(null)).toEqual([])
+  })
+
+  it('resolves the nav slug for an entity type (used to link to a related record)', () => {
+    expect(slugForEntity(nav, 'contact')).toBe('contacts')
+    expect(slugForEntity(nav, 'deal')).toBe('deals')
+    expect(slugForEntity(nav, 'unknown')).toBeNull()
+  })
+
+  it('prefers a list entry over a board entry when an entity has both', () => {
+    const withBoardAndList: LayoutNode = {
+      type: 'nav', id: 'root', children: [
+        { type: 'nav-item', id: 'b', props: { slug: 'pipeline', viewType: 'kanban-board', entityType: 'deal' } },
+        { type: 'nav-item', id: 'l', props: { slug: 'leads', viewType: 'list', entityType: 'deal' } },
+      ],
+    }
+    expect(slugForEntity(withBoardAndList, 'deal')).toBe('leads')
   })
 })
