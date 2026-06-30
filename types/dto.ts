@@ -5,12 +5,20 @@
 export interface RecordDto {
   id: number
   entity_type: string
+  label?: string | null
   stage_id: number | null
   owner_id: number | null
   status: string | null
   data: Record<string, unknown>
   created_at: string
   updated_at: string
+}
+
+// A lightweight record reference: relation-picker options + related-record lists (Phase 6).
+export interface RecordRefDto {
+  id: number
+  entity_type: string | null
+  label: string
 }
 
 export interface StageAccessDto {

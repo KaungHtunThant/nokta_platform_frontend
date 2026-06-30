@@ -20,6 +20,7 @@ provideSurfaceContext({
   field: key => fieldsByKey.value.get(key),
   getValue: key => values[key],
   setValue: () => { /* detail is read-only */ },
+  recordId: props.recordId,
 })
 
 onMounted(async () => {

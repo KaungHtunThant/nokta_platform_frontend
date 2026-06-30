@@ -16,6 +16,8 @@ export interface FieldVm {
   help: string | null
   placeholder: string
   options: FieldOptionVm[]
+  // `relation` fields only: the entity type the picker searches/links to.
+  targetEntityType: string | null
 }
 
 /**
@@ -34,7 +36,7 @@ export function resolveFieldOptions(field: FieldDto): FieldOptionVm[] {
 
 /** Normalize a schema FieldDto into the renderer's FieldVm. */
 export function toFieldVm(field: FieldDto): FieldVm {
-  const ui = field.ui as { placeholder?: unknown } | undefined
+  const ui = field.ui as { placeholder?: unknown, target_entity_type?: unknown } | undefined
 
   return {
     key: field.key,
@@ -44,5 +46,6 @@ export function toFieldVm(field: FieldDto): FieldVm {
     help: field.help ?? null,
     placeholder: typeof ui?.placeholder === 'string' ? ui.placeholder : '',
     options: resolveFieldOptions(field),
+    targetEntityType: typeof ui?.target_entity_type === 'string' ? ui.target_entity_type : null,
   }
 }

@@ -26,6 +26,10 @@ export function formatFieldValue(field: FieldVm, value: unknown): string {
       const n = Number(value)
       return Number.isFinite(n) ? n.toLocaleString() : String(value)
     }
+    // A relation's raw value is the target record id; the RelationDisplay component resolves the
+    // human label. This is the no-component fallback (e.g. plain text rendering / tests).
+    case 'relation':
+      return `#${value}`
     default:
       return String(value)
   }

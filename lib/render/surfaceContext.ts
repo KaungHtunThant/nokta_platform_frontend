@@ -9,6 +9,8 @@ export interface SurfaceContext {
   field: (key: string) => FieldVm | undefined
   getValue: (key: string) => unknown
   setValue: (key: string, value: unknown) => void
+  // The record being shown (detail surface) — lets nodes like `related-records` query its links.
+  recordId?: number
 }
 
 const KEY: InjectionKey<SurfaceContext> = Symbol('surfaceContext')
