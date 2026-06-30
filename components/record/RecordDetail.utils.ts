@@ -25,3 +25,13 @@ export async function loadDetailSurface(entityKey: string, recordId: number): Pr
 
   return { schema, layout, record }
 }
+
+/** Lock (sign) a record — append-only thereafter. Returns its new locked state. */
+export async function lockRecord(recordId: number): Promise<boolean> {
+  return Boolean((await recordsApi.lock(recordId)).is_locked)
+}
+
+/** Unlock a record (privileged). Returns its new locked state. */
+export async function unlockRecord(recordId: number): Promise<boolean> {
+  return Boolean((await recordsApi.unlock(recordId)).is_locked)
+}

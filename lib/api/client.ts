@@ -49,6 +49,18 @@ export const recordsApi = {
     request<unknown>(`/records/${recordId}/links`, { method: 'POST', body: payload }),
   unlink: (recordId: number, payload: { to_record_id: number, relation_key: string }) =>
     request<unknown>(`/records/${recordId}/links`, { method: 'DELETE', body: payload }),
+
+  // --- Phase 7: files + locking ---
+  uploadFile: (recordId: number, fieldKey: string, file: File) => {
+    const form = new FormData()
+    form.append('field_key', fieldKey)
+    form.append('file', file)
+    return request<RecordDto>(`/records/${recordId}/files`, { method: 'POST', body: form })
+  },
+  deleteFile: (recordId: number, mediaId: number) =>
+    request<unknown>(`/records/${recordId}/files/${mediaId}`, { method: 'DELETE' }),
+  lock: (recordId: number) => request<RecordDto>(`/records/${recordId}/lock`, { method: 'POST' }),
+  unlock: (recordId: number) => request<RecordDto>(`/records/${recordId}/unlock`, { method: 'POST' }),
 }
 
 export const boardApi = {

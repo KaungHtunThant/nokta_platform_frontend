@@ -30,6 +30,9 @@ export function formatFieldValue(field: FieldVm, value: unknown): string {
     // human label. This is the no-component fallback (e.g. plain text rendering / tests).
     case 'relation':
       return `#${value}`
+    // File fields store attachments in medialibrary, not the JSON value; FileDisplay renders them.
+    case 'file':
+      return EMPTY
     default:
       return String(value)
   }
