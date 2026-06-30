@@ -2,6 +2,12 @@
 // and are the ONLY shape returned by lib/api. They are mapped into per-util Models before
 // reaching any Pinia store — a DTO is never stored directly.
 
+export interface RecordFileDto {
+  id: number
+  name: string
+  url: string
+}
+
 export interface RecordDto {
   id: number
   entity_type: string
@@ -9,7 +15,10 @@ export interface RecordDto {
   stage_id: number | null
   owner_id: number | null
   status: string | null
+  is_locked?: boolean
   data: Record<string, unknown>
+  // Phase 7: file fields → media, keyed by field key.
+  files?: Record<string, RecordFileDto[]>
   created_at: string
   updated_at: string
 }

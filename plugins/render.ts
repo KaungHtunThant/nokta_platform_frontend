@@ -24,6 +24,8 @@ import MultiSelectInput from '~/components/render/fields/MultiSelectInput.vue'
 import ValueDisplay from '~/components/render/fields/ValueDisplay.vue'
 import RelationInput from '~/components/render/fields/RelationInput.vue'
 import RelationDisplay from '~/components/render/fields/RelationDisplay.vue'
+import FileInput from '~/components/render/fields/FileInput.vue'
+import FileDisplay from '~/components/render/fields/FileDisplay.vue'
 
 export default defineNuxtPlugin(() => {
   // Node types. row/col/group/card/board-column reuse the section container; card-slot reuses the
@@ -61,4 +63,6 @@ export default defineNuxtPlugin(() => {
   registerFieldType('multiselect', { input: MultiSelectInput, display: ValueDisplay })
   // Phase 6 — relation: async record picker (input) + labelled link (display).
   registerFieldType('relation', { input: RelationInput, display: RelationDisplay })
+  // Phase 7 — file: upload (input) + download links (display), backed by medialibrary.
+  registerFieldType('file', { input: FileInput, display: FileDisplay })
 })

@@ -36,4 +36,8 @@ describe('formatFieldValue', () => {
   it('renders a relation value as a record reference (no-component fallback)', () => {
     expect(formatFieldValue(vm({ type: 'relation' }), 7)).toBe('#7')
   })
+
+  it('renders file fields as empty in text (attachments come from the files map)', () => {
+    expect(formatFieldValue(vm({ type: 'file' }), 'anything')).toBe('—')
+  })
 })

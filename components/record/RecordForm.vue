@@ -24,6 +24,8 @@ provideSurfaceContext({
   field: key => fieldsByKey.value.get(key),
   getValue: key => values[key],
   setValue: (key, value) => { values[key] = value },
+  // edit mode — lets file fields attach to the existing record (omitted on create)
+  ...(props.recordId !== undefined ? { recordId: props.recordId } : {}),
 })
 
 onMounted(async () => {
