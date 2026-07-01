@@ -9,7 +9,10 @@ export function formatFieldValue(field: FieldVm, value: unknown): string {
 
   const labelFor = (v: unknown): string => field.options.find(o => o.key === String(v))?.label ?? String(v)
 
-  switch (field.type) {
+  // A computed field carries no widget of its own — format by the type its expression yields.
+  const effectiveType = field.type === 'computed' ? (field.resultType ?? 'text') : field.type
+
+  switch (effectiveType) {
     case 'bool':
     case 'checkbox':
       return value ? 'Yes' : 'No'
