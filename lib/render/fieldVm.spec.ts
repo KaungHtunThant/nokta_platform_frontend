@@ -21,6 +21,12 @@ describe('toFieldVm', () => {
     const vm = toFieldVm(field({ type: 'relation', ui: { target_entity_type: 'contact' } }))
     expect(vm.targetEntityType).toBe('contact')
   })
+
+  it('reads a computed field\'s result_type from ui', () => {
+    const vm = toFieldVm(field({ type: 'computed', ui: { expression: 'a ~ b', result_type: 'number' } }))
+    expect(vm.resultType).toBe('number')
+    expect(toFieldVm(field()).resultType).toBeNull()
+  })
 })
 
 describe('resolveFieldOptions', () => {

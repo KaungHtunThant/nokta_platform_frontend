@@ -3,7 +3,7 @@ import { formatFieldValue } from './displayValue'
 import type { FieldVm } from './fieldVm'
 
 function vm(over: Partial<FieldVm> = {}): FieldVm {
-  return { key: 'f', type: 'text', label: 'F', required: false, help: null, placeholder: '', options: [], targetEntityType: null, ...over }
+  return { key: 'f', type: 'text', label: 'F', required: false, help: null, placeholder: '', options: [], targetEntityType: null, resultType: null, ...over }
 }
 
 describe('formatFieldValue', () => {
@@ -39,5 +39,12 @@ describe('formatFieldValue', () => {
 
   it('renders file fields as empty in text (attachments come from the files map)', () => {
     expect(formatFieldValue(vm({ type: 'file' }), 'anything')).toBe('—')
+  })
+
+  it('formats a computed field by its result_type', () => {
+    // text result → verbatim; number result → localized; bool result → Yes/No.
+    expect(formatFieldValue(vm({ type: 'computed', resultType: 'text' }), 'high')).toBe('high')
+    expect(formatFieldValue(vm({ type: 'computed', resultType: 'number' }), 1500)).toBe((1500).toLocaleString())
+    expect(formatFieldValue(vm({ type: 'computed', resultType: 'bool' }), true)).toBe('Yes')
   })
 })

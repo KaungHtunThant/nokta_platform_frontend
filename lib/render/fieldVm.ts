@@ -18,6 +18,8 @@ export interface FieldVm {
   options: FieldOptionVm[]
   // `relation` fields only: the entity type the picker searches/links to.
   targetEntityType: string | null
+  // `computed` fields only: how to format the server-derived value (text|number|date|bool).
+  resultType: string | null
 }
 
 /**
@@ -36,7 +38,7 @@ export function resolveFieldOptions(field: FieldDto): FieldOptionVm[] {
 
 /** Normalize a schema FieldDto into the renderer's FieldVm. */
 export function toFieldVm(field: FieldDto): FieldVm {
-  const ui = field.ui as { placeholder?: unknown, target_entity_type?: unknown } | undefined
+  const ui = field.ui as { placeholder?: unknown, target_entity_type?: unknown, result_type?: unknown } | undefined
 
   return {
     key: field.key,
@@ -47,5 +49,6 @@ export function toFieldVm(field: FieldDto): FieldVm {
     placeholder: typeof ui?.placeholder === 'string' ? ui.placeholder : '',
     options: resolveFieldOptions(field),
     targetEntityType: typeof ui?.target_entity_type === 'string' ? ui.target_entity_type : null,
+    resultType: typeof ui?.result_type === 'string' ? ui.result_type : null,
   }
 }

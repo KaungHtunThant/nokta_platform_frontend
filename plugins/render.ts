@@ -26,6 +26,7 @@ import RelationInput from '~/components/render/fields/RelationInput.vue'
 import RelationDisplay from '~/components/render/fields/RelationDisplay.vue'
 import FileInput from '~/components/render/fields/FileInput.vue'
 import FileDisplay from '~/components/render/fields/FileDisplay.vue'
+import ComputedDisplay from '~/components/render/fields/ComputedDisplay.vue'
 
 export default defineNuxtPlugin(() => {
   // Node types. row/col/group/card/board-column reuse the section container; card-slot reuses the
@@ -65,4 +66,6 @@ export default defineNuxtPlugin(() => {
   registerFieldType('relation', { input: RelationInput, display: RelationDisplay })
   // Phase 7 — file: upload (input) + download links (display), backed by medialibrary.
   registerFieldType('file', { input: FileInput, display: FileDisplay })
+  // Phase 7b — computed: derived server-side on write; read-only in both form and detail modes.
+  registerFieldType('computed', { input: ComputedDisplay, display: ComputedDisplay })
 })
